@@ -14,14 +14,14 @@ use \App\Http\Controllers\AuthController;
 |
 */
 Route::prefix('v1')->group(function () {
-    Route::group([
-        'middleware' => 'api',
-    ], function ($router) {
-        Route::post('login', [AuthController::class, 'login']);
-        Route::post('logout', [AuthController::class, 'logout']);
-        Route::post('refresh', [AuthController::class, 'refresh']);
-        Route::post('register', [AuthController::class, 'register']);
-    });
+
+    Route::post('login', [AuthController::class, 'login']);
+    Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
+    Route::middleware('auth:api')->post('refresh', [AuthController::class, 'refresh']);
+    Route::post('register', [AuthController::class, 'register']);
+
+
+
 
     Route::fallback(function () {
         return response()->json(['error' => 'Not Found!'], 404);

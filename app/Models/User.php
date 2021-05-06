@@ -51,6 +51,8 @@ class User extends Authenticatable implements JWTSubject
     }
     public function getJWTCustomClaims()
     {
+        /* ToDo */
+        /* Custom JWT responsive values */
         return [];
     }
 }

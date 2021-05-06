@@ -25,6 +25,9 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        /* ToDo */
+        /* Prepare better responsive from server for better UX, e.g, user who set a wrong password or username, as result
+        get only responsible from last line in login function.  */
         $login_data = Validator::make(
             $request->all(),
             [
@@ -60,9 +63,9 @@ class AuthController extends Controller
             /* ToDo */
             /* Create first register user as admin, init CMS */
             $user = new User();
-            $user['nickname'] = $request->nickname;
-            $user['email'] = $request->email;
-            $user['password'] = bcrypt($request->password);
+            $user->nickname = $request->nickname;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
             $user->save();
 
         } catch (\Exception $e) {
