@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use \App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,18 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::prefix('v1')->group(function () {
-    Route::middleware('auth:api')->get('/user', function (Request $request) {
-        return $request->user();
+    Route::group([
+        'middleware' => 'api',
+    ], function ($router) {
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
     });
-    Route::get('/', function () {
-        return "Hello World";
+
+    Route::fallback(function () {
+        return response()->json(['error' => 'Not Found!'], 404);
     });
 });
 
-
-
-Route::get('/', function () {
-    return 'Hello World';
-});
 
 
