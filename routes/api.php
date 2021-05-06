@@ -21,8 +21,6 @@ Route::prefix('v1')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
 
 
-
-
     Route::fallback(function () {
         return response()->json(['error' => 'Not Found!'], 404);
     });
