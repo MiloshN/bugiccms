@@ -15,13 +15,8 @@ class AuthController extends Controller
     /**
      * Create a new AuthController instance.
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
-//    public function __construct()
-//    {
-//        $this->middleware('auth:api', ['except' => ['login', 'register', 'logout']]);
-//    }
-
 
     public function login(Request $request)
     {
