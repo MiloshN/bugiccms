@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 
+
+use Database\Seeders\RoleSeeder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Permission;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -57,11 +62,32 @@ class AuthController extends Controller
         try {
             /* ToDo */
             /* Create first register user as admin, init CMS */
-            $user = new User();
-            $user->nickname = $request->nickname;
-            $user->email = $request->email;
-            $user->password = bcrypt($request->password);
-            $user->save();
+            $user_len = User::count();
+
+            if($user_len < 1) {
+                $role_seeder = new RoleSeeder();
+                $role_seeder->run();
+
+                $admin_role = Role::where('slug','admin')->first();
+                $user_role = Role::where('slug','user')->first();
+                $user = new User();
+                $user->email = $request->email;
+                $user->nickname = $request->nickname;
+                $user->password = bcrypt($request->password);
+                $user->save();
+                $user->roles()->attach($admin_role);
+                $user->roles()->attach($user_role);
+            } else {
+                $user_role = Role::where('slug','user')->first();
+                $user = new User();
+                $user->email = $request->email;
+                $user->nickname = $request->nickname;
+                $user->password = bcrypt($request->password);
+                $user->save();
+                $user->roles()->attach($user_role);
+            }
+
+
 
         } catch (\Exception $e) {
             return response()->json(['fatal error' => $e], 502);
