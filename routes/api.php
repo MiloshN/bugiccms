@@ -20,9 +20,11 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
     Route::middleware('auth:api')->post('refresh', [AuthController::class, 'refresh']);
     Route::post('register', [AuthController::class, 'register']);
-    Route::middleware('role:admin')->group(function () {
-        Route::get('admin', function() {
-            return 'Welcome Admin';
+    Route::prefix('dashboard')->group(function () {
+        Route::middleware('role:admin')->group(function () {
+            Route::get('admin', function () {
+                return 'Welcome Admin';
+            });
         });
     });
     Route::middleware('role:user')->get('dashboard',function() {
