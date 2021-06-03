@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
-use \App\Http\Controllers\PermissionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,17 +19,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
     Route::middleware('auth:api')->post('refresh', [AuthController::class, 'refresh']);
     Route::post('register', [AuthController::class, 'register']);
-    Route::prefix('dashboard')->group(function () {
-        Route::middleware('role:admin')->group(function () {
-            Route::get('', function () {
-                return 'Welcome Admin';
-            });
-        });
+    Route::middleware('role:admin')->get('dashboard',function() {
+        return 'Welcome Admin';
     });
-    Route::middleware('role:user')->get('dashboard',function() {
-        return 'Welcome User';
-    });
-
     Route::fallback(function () {
         return response()->json(['error' => 'Not Found!'], 404);
     });
