@@ -19,8 +19,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
     Route::middleware('auth:api')->post('refresh', [AuthController::class, 'refresh']);
     Route::post('register', [AuthController::class, 'register']);
-
-
+    Route::middleware('role:admin')->get('dashboard',function() {
+        return 'Welcome Admin';
+    });
     Route::fallback(function () {
         return response()->json(['error' => 'Not Found!'], 404);
     });
