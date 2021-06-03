@@ -62,32 +62,15 @@ class AuthController extends Controller
         try {
             /* ToDo */
             /* Create first register user as admin, init CMS */
-            $user_len = User::count();
-
-            if($user_len < 1) {
-                $role_seeder = new RoleSeeder();
-                $role_seeder->run();
-
-                $admin_role = Role::where('slug','admin')->first();
-                $user_role = Role::where('slug','user')->first();
-                $user = new User();
-                $user->email = $request->email;
-                $user->nickname = $request->nickname;
-                $user->password = bcrypt($request->password);
-                $user->save();
-                $user->roles()->attach($admin_role);
-                $user->roles()->attach($user_role);
-            } else {
-                $user_role = Role::where('slug','user')->first();
-                $user = new User();
-                $user->email = $request->email;
-                $user->nickname = $request->nickname;
-                $user->password = bcrypt($request->password);
-                $user->save();
-                $user->roles()->attach($user_role);
-            }
-
-
+            $role_seeder = new RoleSeeder();
+            $role_seeder->run();
+            $admin_role = Role::where('slug','admin')->first();
+            $user = new User();
+            $user->nickname = $request->nickname;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->save();
+            $user->roles()->attach($admin_role);
 
         } catch (\Exception $e) {
             return response()->json(['fatal error' => $e], 502);

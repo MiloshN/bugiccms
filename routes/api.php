@@ -22,7 +22,7 @@ Route::prefix('v1')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::prefix('dashboard')->group(function () {
         Route::middleware('role:admin')->group(function () {
-            Route::get('admin', function () {
+            Route::get('', function () {
                 return 'Welcome Admin';
             });
         });
